@@ -1,0 +1,113 @@
+{
+	"name": "SourceHeader",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "SampleAddress_Extract (3).txt",
+				"container": "input"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Address1",
+				"type": "String"
+			},
+			{
+				"name": "Address2",
+				"type": "String"
+			},
+			{
+				"name": "Address3",
+				"type": "String"
+			},
+			{
+				"name": "Address4",
+				"type": "String"
+			},
+			{
+				"name": "City",
+				"type": "String"
+			},
+			{
+				"name": "State",
+				"type": "String"
+			},
+			{
+				"name": "Postal",
+				"type": "String"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			},
+			{
+				"name": "Customer Name",
+				"type": "String"
+			},
+			{
+				"name": "USUrbanName",
+				"type": "String"
+			},
+			{
+				"name": "CustomerID",
+				"type": "String"
+			},
+			{
+				"name": "CanLanguage",
+				"type": "String"
+			},
+			{
+				"name": "Account ID",
+				"type": "String"
+			},
+			{
+				"name": "Person ID",
+				"type": "String"
+			},
+			{
+				"name": "Premise ID",
+				"type": "String"
+			},
+			{
+				"name": "Sequence",
+				"type": "String"
+			},
+			{
+				"name": "Address Type",
+				"type": "String"
+			},
+			{
+				"name": "Batch Number",
+				"type": "String"
+			},
+			{
+				"name": "Cis Division",
+				"type": "String"
+			},
+			{
+				"name": "County",
+				"type": "String"
+			},
+			{
+				"name": "Part Number",
+				"type": "String"
+			},
+			{
+				"name": "MUNI",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,36 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "SourceEmpl"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText2",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				},
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "source(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\tignoreNoFilesFound: false) ~> SourceEmpl\nSourceEmpl derive({_col0_} = toString(byName('_col0_')),\n\t\t{_col1_} = toString(byName('_col1_'))) ~> MapDrifted1\nMapDrifted1 derive(Column_1 = concat(rpad(Column_1,10,\"   \"),rpad({_col0_},11,\"   \"),rpad({_col1_},9,\"    \"))) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: true,\n\tinput(\n\t\tColumn_1 as string\n\t),\n\tpartitionFileNames:['input-employee-output.txt'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tColumn_1\n\t),\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

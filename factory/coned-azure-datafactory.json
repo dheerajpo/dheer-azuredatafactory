@@ -1,0 +1,9 @@
+{
+	"name": "coned-azure-datafactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7f70ef9d-2c68-4041-a0ea-bfebc16216e9",
+		"tenantId": "63ce7d59-2f3e-42cd-a8cc-be764cff5eb6"
+	}
+}
