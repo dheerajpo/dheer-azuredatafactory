@@ -1,0 +1,492 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "coned-azure-datafactory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "interface1-employee.txt",
+						"container": "input"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "output"
+					},
+					"columnDelimiter": "\t",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceHeader')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "SampleAddress_Extract (3).txt",
+						"container": "input"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Address1",
+						"type": "String"
+					},
+					{
+						"name": "Address2",
+						"type": "String"
+					},
+					{
+						"name": "Address3",
+						"type": "String"
+					},
+					{
+						"name": "Address4",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "State",
+						"type": "String"
+					},
+					{
+						"name": "Postal",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					},
+					{
+						"name": "Customer Name",
+						"type": "String"
+					},
+					{
+						"name": "USUrbanName",
+						"type": "String"
+					},
+					{
+						"name": "CustomerID",
+						"type": "String"
+					},
+					{
+						"name": "CanLanguage",
+						"type": "String"
+					},
+					{
+						"name": "Account ID",
+						"type": "String"
+					},
+					{
+						"name": "Person ID",
+						"type": "String"
+					},
+					{
+						"name": "Premise ID",
+						"type": "String"
+					},
+					{
+						"name": "Sequence",
+						"type": "String"
+					},
+					{
+						"name": "Address Type",
+						"type": "String"
+					},
+					{
+						"name": "Batch Number",
+						"type": "String"
+					},
+					{
+						"name": "Cis Division",
+						"type": "String"
+					},
+					{
+						"name": "County",
+						"type": "String"
+					},
+					{
+						"name": "Part Number",
+						"type": "String"
+					},
+					{
+						"name": "MUNI",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TargetHeader')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "output"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Address1",
+						"type": "String"
+					},
+					{
+						"name": "Address2",
+						"type": "String"
+					},
+					{
+						"name": "Address3",
+						"type": "String"
+					},
+					{
+						"name": "Address4",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "State",
+						"type": "String"
+					},
+					{
+						"name": "Postal",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					},
+					{
+						"name": "Customer Name",
+						"type": "String"
+					},
+					{
+						"name": "USUrbanName",
+						"type": "String"
+					},
+					{
+						"name": "CustomerID",
+						"type": "String"
+					},
+					{
+						"name": "CanLanguage",
+						"type": "String"
+					},
+					{
+						"name": "Account ID",
+						"type": "String"
+					},
+					{
+						"name": "Person ID",
+						"type": "String"
+					},
+					{
+						"name": "Premise ID",
+						"type": "String"
+					},
+					{
+						"name": "Sequence",
+						"type": "String"
+					},
+					{
+						"name": "Address Type",
+						"type": "String"
+					},
+					{
+						"name": "Batch Number",
+						"type": "String"
+					},
+					{
+						"name": "Cis Division",
+						"type": "String"
+					},
+					{
+						"name": "County",
+						"type": "String"
+					},
+					{
+						"name": "Part Number",
+						"type": "String"
+					},
+					{
+						"name": "MUNI",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HeaderTrailerPOC')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "SourceHeader",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "TargetHeader",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"script": "source(output(\n\t\tAddress1 as string,\n\t\tAddress2 as string,\n\t\tAddress3 as string,\n\t\tAddress4 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tPostal as string,\n\t\tCountry as string,\n\t\t{Customer Name} as string,\n\t\tUSUrbanName as string,\n\t\tCustomerID as string,\n\t\tCanLanguage as string,\n\t\t{Account ID} as string,\n\t\t{Person ID} as string,\n\t\t{Premise ID} as string,\n\t\tSequence as string,\n\t\t{Address Type} as string,\n\t\t{Batch Number} as string,\n\t\t{Cis Division} as string,\n\t\tCounty as string,\n\t\t{Part Number} as string,\n\t\tMUNI as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tAddress1 as string,\n\t\tAddress2 as string,\n\t\tAddress3 as string,\n\t\tAddress4 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tPostal as string,\n\t\tCountry as string,\n\t\t{Customer Name} as string,\n\t\tUSUrbanName as string,\n\t\tCustomerID as string,\n\t\tCanLanguage as string,\n\t\t{Account ID} as string,\n\t\t{Person ID} as string,\n\t\t{Premise ID} as string,\n\t\tSequence as string,\n\t\t{Address Type} as string,\n\t\t{Batch Number} as string,\n\t\t{Cis Division} as string,\n\t\tCounty as string,\n\t\t{Part Number} as string,\n\t\tMUNI as string\n\t),\n\tpartitionFileNames:['targetoutput.txt'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceHeader')]",
+				"[concat(variables('factoryId'), '/datasets/TargetHeader')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference"
+							},
+							"name": "SourceEmpl"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "MapDrifted1",
+							"description": "Creates an explicit mapping for each drifted column"
+						},
+						{
+							"name": "DerivedColumn1"
+						}
+					],
+					"script": "source(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\tignoreNoFilesFound: false) ~> SourceEmpl\nSourceEmpl derive({_col0_} = toString(byName('_col0_')),\n\t\t{_col1_} = toString(byName('_col1_'))) ~> MapDrifted1\nMapDrifted1 derive(Column_1 = concat(rpad(Column_1,10,\"   \"),rpad({_col0_},11,\"   \"),rpad({_col1_},9,\"    \"))) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: true,\n\tinput(\n\t\tColumn_1 as string\n\t),\n\tpartitionFileNames:['input-employee-output.txt'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tColumn_1\n\t),\n\tpartitionBy('hash', 1)) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TargetTrailerPOC')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data-flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "HeaderTrailerPOC",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2021-07-21T12:19:38Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/HeaderTrailerPOC')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow18",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceEmpl": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2021-07-09T05:18:53Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		}
+	]
+}
