@@ -1,0 +1,9 @@
+{
+	"name": "coned-datafactory-dev",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "cfd918cf-449b-4665-b52c-b1a176dcaa25",
+		"tenantId": "8f9636c1-8612-4fb5-8341-7dd0a4e2b972"
+	}
+}
